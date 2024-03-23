@@ -1,50 +1,46 @@
-import {useState} from "react";
+import { useEffect, useState } from "react";
 
 
-const AddTask = ({taskList,setTaskList}) =>{
-    const[addModal , setAddModal] = useState(false);
+const EditTask = ({taskList,setTaskList,task})=>{
+
+    const [editModal,setEditModal] = useState(false);
     const [ projectName,setProjectName] = useState("");
     const [taskDescription ,setTaskDescription] = useState("");
-    const [errorMessage , setErrorMessage] = useState("");
-
+    
+   
+    useEffect(() =>{
+        setProjectName(task.projectName);
+        setTaskDescription(task.taskDescription);
+     },[task.projectName,task.taskDescription])
     const handleInput = e =>{
         const {name,value} = e.target;
         if(name === "projectName"){
-            if(value === ""){
-                setErrorMessage("Your project name is empty.")
+            if(value ===""){
+                
             }
-            setErrorMessage("");
             setProjectName(value);
-        } 
-        else if(name ==="taskDescription"){
+        }else if(name ==="taskDescription"){
             setTaskDescription(value);
         }
     }
-    const handleAdd = e =>{
+    const handleUpdate = e =>{
         e.preventDefault();
-        if(!projectName){
-            setErrorMessage("Your project name is empty.");
-        }else{
-            setTaskList(
-                [...taskList, { projectName , taskDescription }]
-            );
-            setAddModal(false);
-            setProjectName("");
-            setTaskDescription("");
-        }
+        let taskIndex = taskList.indexOf(task);
+        taskList.splice(taskIndex,1);
+        setTaskList(
+            [...taskList, { projectName , taskDescription }]
+        );
+        setEditModal(false);
+        setProjectName("");
+        setTaskDescription("");
     }
-
     return(
         <>
-            <button className="bg-blue-400 text-white uppercase text-sm 
-            font-semibold py-1 mx-1.5 pl-2 pr-2.5 rounded hover:opacity-70"
-            type = "button"
-            onClick={()=>setAddModal(true)}>
-                +New
-            </button>
+            <button className="bg-gray-300 px-2 py-1.5 rounded-lg font-semibold
+            text-white text-sm uppercase"
+            onClick={()=>setEditModal(true)}>Edit</button>
 
-            {addModal ? (
-            <>
+            {editModal ? (<>
                 <div className="flex items-center justify-center 
                 overflow-x-hidden overflow-y-auto
                 fixed inset-0 z-100 "> 
@@ -53,10 +49,10 @@ const AddTask = ({taskList,setTaskList}) =>{
                     ">
                         <div className=" flex flex-row justify-between p-5 
                         border-b bg-white border-slate-200 rounded-t">
-                            <h3 className="font-bold text-2xl">Add New Task</h3>
+                            <h3 className="font-bold text-2xl">Edit Task</h3>
                             <button className="px-1 text-gray-400 float-right 
                             text-3xl leading-none font-semibold block"
-                            onClick={() =>setAddModal(false)}> 
+                            onClick={() =>setEditModal(false)}> 
                                 x
                             </button>
                         </div>
@@ -77,9 +73,8 @@ const AddTask = ({taskList,setTaskList}) =>{
                                 border-gray-200 rounded py-3 px-4 mb-5
                                 leading-tight focus:outline-none
                                 focus:bg-white"
-                                required />
-                                <p className="text-red-500 text-center 
-                                mt-2 mb-5">{errorMessage}</p>
+                                required>
+                                </input>
                             </div>
                             <div>
                                 <label className="track-wide uppercase text-gray-700
@@ -106,16 +101,18 @@ const AddTask = ({taskList,setTaskList}) =>{
                             className="bg-blue-400 text-white font-semibold uppercase
                             text-sm px-6 py-3 rounded 
                             hover:opacity-70"
-                            onClick={handleAdd}>
-                                Add Task
+                            onClick={handleUpdate}>
+                                Update Task
                             </button>
                         </div>
                     </div>
                 </div>
-            </>)
-            : null }
-        
+            </>
+            ):
+            null}
+
         </>
     )
 }
-export default AddTask;
+
+export default EditTask;

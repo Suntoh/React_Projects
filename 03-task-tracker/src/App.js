@@ -24,7 +24,8 @@ function App() {
         px-2 py-1 w-3/4 max-w-lg my-4">To Do : </h2>
         {taskList.map((task,i) => 
         <>
-           <ToDo task={task}/>
+           <ToDo key = {new Date().getTime()} index = {i} taskList = {taskList} 
+           setTaskList={setTaskList} task={task}/>
         </>
         )}
       </div>
