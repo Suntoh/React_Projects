@@ -11,7 +11,9 @@ const EditTask = ({taskList,setTaskList,task})=>{
     useEffect(() =>{
         setProjectName(task.projectName);
         setTaskDescription(task.taskDescription);
-     },[task.projectName,task.taskDescription])
+        },[task.projectName,task.taskDescription])
+
+
     const handleInput = e =>{
         const {name,value} = e.target;
         if(name === "projectName"){
@@ -26,13 +28,15 @@ const EditTask = ({taskList,setTaskList,task})=>{
     const handleUpdate = e =>{
         e.preventDefault();
         let taskIndex = taskList.indexOf(task);
-        taskList.splice(taskIndex,1);
-        setTaskList(
-            [...taskList, { projectName , taskDescription }]
-        );
+        taskList.splice(taskIndex,1,{
+            projectName: projectName,
+            taskDescription:taskDescription,
+            timestamp: task.timestamp,
+            duration:task.duration
+        });
+        localStorage.setItem("taskList",JSON.stringify(taskList));
+        window.location.reload();
         setEditModal(false);
-        setProjectName("");
-        setTaskDescription("");
     }
     return(
         <>
