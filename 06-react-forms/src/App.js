@@ -113,7 +113,7 @@ function App() {
               name="dob"
               type="date"
               max = "2006-03-31"
-              placeholder="Date of Borth" //won't show up
+              placeholder="Date of Birth" //won't show up
               onChange={handleInput}
               />
              </div>
