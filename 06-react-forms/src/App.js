@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-
 function App() {
-  const tdy = new Date();
+
   const [userInfo ,setUserInfo] = useState({
     firstName:"",
     lastName:"",
